@@ -7,14 +7,18 @@
 
     function rewriteRules(rules, themeNameSelector) {
       rules.forEach(rule => {
-        if (rule.type === CSSStyleRule.STYLE_RULE) {
+        if (rule.type === (CSSStyleRule.STYLE_RULE || 1) /* Names do not work in MS IE/Edge */) {
           // :host([something])
           rule.selector = rule.selector.replace(/:host\((.*)\)/g, themeNameSelector);
           // :host
           rule.selector = rule.selector.replace(/:host(?!\()()/g, themeNameSelector);
           // [something]
           rule.selector = rule.selector.replace(/()(^|,\s+)(?!:host)/g, `$2${themeNameSelector} `);
-        } else if (rule.rules) {
+        } else if (rule.rules &&
+            rule.type === (CSSStyleRule.MEDIA_RULE || 1) ||
+            rule.type === (CSSStyleRule.SUPPORTS_RULE || 12)) {
+          // Rewrite nested rules in @media and @supports
+          // (but not in @keyframes or anything else)
           rewriteRules(rule.rules, themeNameSelector);
         }
       });
