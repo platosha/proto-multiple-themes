@@ -1,0 +1,24 @@
+<link rel="import" href="bower_components/polymer/polymer.html">
+<link rel="import" href="bower_components/vaadin-button/vaadin-button.html">
+<link rel="import" href="bower_components/vaadin-themable-mixin/vaadin-themable-mixin.html">
+<link rel="import" href="bower_components/vaadin-themes/material/elements/vaadin-button.html">
+
+<dom-module id="material-my-button">
+  <template>
+    <style include="material-button"></style>
+  </template>
+</dom-module>
+
+<script>
+  class MyButtonElement extends Vaadin.ThemableMixin(Vaadin.ButtonElement) {
+    static get is() {
+      return 'my-button';
+    }
+
+    static get preventThemeInheritance() {
+      return true;
+    }
+  }
+
+  customElements.define(MyButtonElement.is, MyButtonElement);
+</script>

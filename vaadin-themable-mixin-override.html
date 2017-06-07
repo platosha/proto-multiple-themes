@@ -1,0 +1,97 @@
+<link rel="import" href="bower_components/polymer/polymer.html">
+<link rel="import" href="bower_components/vaadin-themable-mixin/vaadin-themable-mixin.html"></link>
+
+<script>
+  {
+    window.Vaadin = window.Vaadin || {};
+
+    function rewriteRules(rules, themeNameSelector) {
+      rules.forEach(rule => {
+        if (rule.type === CSSStyleRule.STYLE_RULE) {
+          // :host([something])
+          rule.selector = rule.selector.replace(/:host\((.*)\)/g, themeNameSelector);
+          // :host
+          rule.selector = rule.selector.replace(/:host(?!\()()/g, themeNameSelector);
+          // [something]
+          rule.selector = rule.selector.replace(/()(^|,\s+)(?!:host)/g, `$2${themeNameSelector} `);
+        } else if (rule.rules) {
+          rewriteRules(rule.rules, themeNameSelector);
+        }
+      });
+    }
+
+    Vaadin.ThemableMixin = superClass => class VaadinThemableMixin extends superClass {
+      static get template() {
+        if (super.template && !this._memoizedTemplate) {
+          this._memoizedTemplate = super.template.cloneNode(true);
+          const modules = Polymer.DomModule.prototype.modules;
+          let hasThemes = false;
+          const defaultModuleName = this.is + '-default-theme';
+          Object.keys(modules).forEach(moduleName => {
+            if (moduleName !== defaultModuleName) {
+              const themeFor = modules[moduleName].getAttribute('theme-for');
+              if (themeFor) {
+                themeFor.split(' ').forEach(themeForToken => {
+                  if (new RegExp('^' + themeForToken.split('*').join('.*') + '$').test(this.is)) {
+                    hasThemes = true;
+                    this.includeStyle(moduleName);
+                  }
+                });
+              }
+            }
+          });
+          if (!hasThemes) {
+            // No theme modules found, include the default module
+            this.includeStyle(defaultModuleName);
+          }
+        }
+        return this._memoizedTemplate;
+      }
+
+      static includeStyle(moduleName) {
+        const styleEl = document.createElement('style');
+        styleEl.textContent = Polymer.StyleGather.cssFromModule(moduleName);
+
+        const themeName = moduleName.split('-')[0];
+        // styleEl.setAttribute('include', moduleName);
+        if (themeName !== 'vaadin') {
+          // Rewrite selectors adding `theme-name` host attribute scope
+          const themeNameSelector = `:host([theme-name="${themeName}"]$1)`;
+          const styleAst = ShadyCSS.ScopingShim.getStyleAst(styleEl);
+          rewriteRules(styleAst.rules, themeNameSelector);
+          styleEl.textContent = ShadyCSS.ScopingShim.styleAstToString(styleAst);
+        }
+
+        this._memoizedTemplate.content.appendChild(styleEl);
+      }
+
+      _getThemeName() {
+        let node = this;
+        while (node) {
+          if (node.nodeType === Node.ELEMENT_NODE) {
+            const theme = node.getAttribute('theme-name');
+            if (theme !== null) {
+              return theme;
+            }
+          }
+          node = node.parentNode || node.host;
+        }
+      }
+
+      connectedCallback() {
+        super.connectedCallback();
+
+        const themeName = this._getThemeName();
+        if (themeName) {
+          this.setAttribute('theme-name', themeName);
+        }
+      }
+
+      // disconnectedCallback() {
+      //   super.disconnectedCallback();
+      //
+      //   this.removeAttribute('theme-name');
+      // }
+    };
+  }
+</script>

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Multiple themes on the same page test</title>
+
+  <script src="bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+  <link rel="import" href="vaadin-themable-mixin-override.html">
+
+  <link rel="import" href="bower_components/vaadin-themes/material/material.html">
+  <link rel="import" href="bower_components/vaadin-themes/material/elements/vaadin-button.html">
+  <link rel="import" href="bower_components/vaadin-themes/material/elements/vaadin-text-field.html">
+
+  <link rel="import" href="bower_components/vaadin-themes/valo/valo.html">
+  <link rel="import" href="bower_components/vaadin-themes/valo/elements/vaadin-button.html">
+  <link rel="import" href="bower_components/vaadin-themes/valo/elements/vaadin-text-field.html">
+
+  <link rel="import" href="bower_components/vaadin-text-field/vaadin-text-field.html">
+  <link rel="import" href="bower_components/vaadin-button/vaadin-button.html">
+
+  <style>
+    body {
+      max-width: 60em;
+      margin: 3rem auto;
+      padding: 0 2rem;
+      font: 12pt/1.5 sans-serif;
+    }
+
+    section {
+      box-shadow: 0 1rem 2rem rgba(0, 0, 0, .25);
+      margin: 0 0 4rem;
+    }
+
+    h2 {
+      margin: 0;
+      padding: 2rem 2rem 1rem;
+      background: #eee;
+    }
+    
+    p {
+      margin: 0;
+      padding: 2rem;
+    }
+  </style>
+</head>
+<body theme-name="valo">
+
+  <div style="display: flex; align-items: baseline;">
+    <div style="flex: auto;">
+      <h1>Vaadin Themes for Core Elements</h1>
+    </div>
+    <div style="flex: none;">
+      <vaadin-text-field label="Search vaadin.com..."></vaadin-text-field>
+      <vaadin-button>Login</vaadin-button>
+    </div>
+  </div>
+
+  <section theme-name="material">
+    <h2>Material</h2>
+
+    <p>
+      <vaadin-text-field label="Text Field"></vaadin-text-field>
+      <vaadin-text-field label="Text Field" value="value"></vaadin-text-field>
+      <vaadin-text-field label="Text Field" required></vaadin-text-field>
+      <vaadin-text-field label="Text Field" invalid error-message="Can not be empty"></vaadin-text-field>
+      <vaadin-text-field label="Text Field" disabled value="value"></vaadin-text-field>
+    </p>
+
+    <p>
+      <vaadin-button>Button</vaadin-button>
+      <vaadin-button theme="primary">Primary</vaadin-button>
+      <vaadin-button theme="raised">Button</vaadin-button>
+      <vaadin-button theme="raised primary">Primary</vaadin-button>
+    </p>
+
+    <p theme="dark">
+      <vaadin-text-field label="Text Field"></vaadin-text-field>
+      <vaadin-text-field label="Text Field" value="value"></vaadin-text-field>
+      <vaadin-text-field label="Text Field" required></vaadin-text-field>
+      <vaadin-text-field label="Text Field" invalid error-message="Can not be empty"></vaadin-text-field>
+      <vaadin-text-field label="Text Field" disabled value="value"></vaadin-text-field>
+    </p>
+
+    <p theme="dark">
+      <vaadin-button>Button</vaadin-button>
+      <vaadin-button theme="primary">Primary</vaadin-button>
+      <vaadin-button theme="raised">Button</vaadin-button>
+      <vaadin-button theme="raised primary">Primary</vaadin-button>
+    </p>
+  </section>
+
+  <section theme-name="valo">
+    <h2>Valo</h2>
+
+    <p>
+      <vaadin-text-field label="Text Field"></vaadin-text-field>
+      <vaadin-text-field label="Text Field" value="value"></vaadin-text-field>
+      <vaadin-text-field label="Text Field" required></vaadin-text-field>
+      <vaadin-text-field label="Text Field" invalid error-message="Can not be empty"></vaadin-text-field>
+      <vaadin-text-field label="Text Field" disabled value="value"></vaadin-text-field>
+    </p>
+
+    <p>
+      <vaadin-button>Button</vaadin-button>
+      <vaadin-button theme="primary">Primary</vaadin-button>
+      <vaadin-button theme="raised">Button</vaadin-button>
+      <vaadin-button theme="raised primary">Primary</vaadin-button>
+    </p>
+
+    <p theme="dark">
+      <vaadin-text-field label="Text Field"></vaadin-text-field>
+      <vaadin-text-field label="Text Field" value="value"></vaadin-text-field>
+      <vaadin-text-field label="Text Field" required></vaadin-text-field>
+      <vaadin-text-field label="Text Field" invalid error-message="Can not be empty"></vaadin-text-field>
+      <vaadin-text-field label="Text Field" disabled value="value"></vaadin-text-field>
+    </p>
+
+    <p theme="dark">
+      <vaadin-button>Button</vaadin-button>
+      <vaadin-button theme="primary">Primary</vaadin-button>
+      <vaadin-button theme="raised">Button</vaadin-button>
+      <vaadin-button theme="raised primary">Primary</vaadin-button>
+    </p>
+  </section>
+</body>
+</html>
